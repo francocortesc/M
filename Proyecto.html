@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MOBIMEX - Moviendo a México</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8; /* Fondo general */
+        }
+
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 30px;
+            background-color: white;
+            border-bottom: 1px solid #ccc;
+            position: sticky; /* Hace el header pegajoso en la parte superior */
+            top: 0;
+            z-index: 1000; /* Asegura que esté por encima del contenido */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Sombra ligera */
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 60px;
+            margin-right: 10px;
+        }
+
+        .logo div strong {
+            display: block; /* Asegura que "MOBIMEX" esté en una línea separada */
+            font-size: 20px; /* Ajusta el tamaño del título principal */
+        }
+        .logo div {
+             font-size: 14px; /* Ajusta el tamaño del subtítulo */
+             color: #555;
+        }
+
+
+        nav a {
+            margin-left: 30px;
+            text-decoration: none;
+            color: black;
+            font-size: 18px;
+            transition: color 0.3s ease; /* Transición suave al pasar el ratón */
+        }
+
+        nav a:hover {
+             color: #007bff; /* Cambia de color al pasar el ratón */
+        }
+
+        /* Estilos para la sección de Bienvenida */
+        .contenido {
+            padding: 50px;
+            text-align: center;
+            background-color: #e9ecef; /* Color de fondo diferente para destacar */
+        }
+
+        .contenido h1 {
+            color: #222;
+            font-size: 36px;
+            margin-bottom: 15px;
+        }
+
+        .contenido p {
+            font-size: 18px;
+            color: #444;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* Estilos para las secciones generales (Quiénes somos, Tarjeta) */
+        section {
+            padding: 60px 30px; /* Aumenta padding para mejor separación */
+            background-color: white; /* Fondo blanco para las secciones */
+            margin-bottom: 20px; /* Espacio entre secciones */
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sombra sutil */
+        }
+
+        section:nth-of-type(odd) { /* Fondo alternado para secciones */
+             background-color: #f8f9fa;
+        }
+
+
+        section h2 {
+            font-size: 32px; /* Título de sección más grande */
+            color: #222;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        section h3 {
+            font-size: 24px;
+            color: #333;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        section p, section li {
+            font-size: 18px;
+            color: #444;
+            line-height: 1.6;
+            max-width: 800px; /* Ancho máximo para el texto de párrafo y lista */
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        ul {
+            padding-left: 40px; /* Aumenta el padding de la lista */
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Estilos específicos de la sección Aplicación (Calculadora) */
+        #aplicacion .container {
+            background-color: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            max-width: 800px; /* Ajusta el ancho máximo del contenedor de la calculadora */
+            margin: 20px auto; /* Centra el contenedor y añade margen */
+        }
+
+        #aplicacion .form-group {
+            margin-bottom: 20px;
+        }
+
+        #aplicacion label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        #aplicacion select, #aplicacion input[type="number"] {
+            width: calc(100% - 22px); /* Ajusta ancho considerando padding y borde */
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        #aplicacion button {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            display: block; /* Hace el botón un bloque para centrarlo */
+            margin: 20px auto 0 auto; /* Centra el botón */
+        }
+
+        #aplicacion button:hover {
+            background-color: #2980b9;
+        }
+
+        #aplicacion .result-box {
+            background-color: #e8f4fc;
+            border-left: 4px solid #3498db;
+            padding: 20px;
+            margin-top: 30px;
+            border-radius: 4px;
+        }
+
+        #aplicacion .result-title {
+            font-size: 20px;
+            margin-top: 0;
+            color: #2c3e50;
+        }
+
+        #aplicacion .result-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #e74c3c;
+        }
+
+        #aplicacion .chart-container {
+            margin-top: 30px;
+            height: 400px;
+            position: relative; /* Necesario para que el canvas ocupe el 100% del contenedor */
+        }
+         #aplicacion .chart-container canvas {
+             width: 100% !important; /* Asegura que el canvas use el 100% del ancho */
+             height: 100% !important; /* Asegura que el canvas use el 100% del alto */
+         }
+
+
+        #aplicacion .transport-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        #aplicacion .transport-option {
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px;
+            flex: 1 1 calc(33% - 20px); /* Intenta 3 columnas, ajusta si es necesario */
+            min-width: 180px; /* Ancho mínimo para evitar colapso excesivo */
+            box-sizing: border-box; /* Incluye padding y borde en el ancho */
+        }
+
+        #aplicacion .transport-option label {
+            display: flex;
+            align-items: center;
+            font-weight: normal;
+            cursor: pointer;
+            margin-bottom: 0; /* Elimina el margen inferior de la etiqueta */
+        }
+
+        #aplicacion .transport-option input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            margin-top: 0; /* Alinea el checkbox */
+        }
+
+        #aplicacion .transport-price {
+            float: right;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        #aplicacion .compare-options {
+            margin-top: 20px;
+        }
+
+        #aplicacion .compare-options label {
+            display: inline-block;
+            margin-right: 15px;
+            cursor: pointer;
+            font-weight: normal; /* Las etiquetas de checkbox no necesitan negrita */
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Estilos específicos de la sección Tarjeta (Movicard) */
+        #tarjeta .tarjeta-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        #tarjeta .tarjeta-container img {
+            max-width: 400px; /* Ancho máximo de la imagen de la tarjeta */
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        #tarjeta .btn-recargar {
+            margin-top: 20px;
+            padding: 12px 24px;
+            font-size: 18px; /* Tamaño de fuente del botón */
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #tarjeta .btn-recargar:hover {
+            background-color: #218838;
+        }
+
+        /* Estilos del formulario emergente (Modal) */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000; /* Mayor que el header */
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.6); /* Fondo más oscuro */
+            backdrop-filter: blur(5px); /* Efecto blur */
+            -webkit-backdrop-filter: blur(5px); /* Para Safari */
+            padding-top: 60px; /* Espacio para que no quede pegado arriba */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 5% auto; /* Ajusta el margen superior para centrar mejor */
+            padding: 30px; /* Más padding */
+            border: 1px solid #888;
+            width: 90%; /* Ancho en móviles */
+            max-width: 400px; /* Ancho máximo */
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Sombra más pronunciada */
+            position: relative; /* Para posicionar el botón de cierre */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 30px; /* Tamaño más grande */
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute; /* Posiciona el botón de cierre */
+            top: 10px;
+            right: 15px;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+        }
+
+        .modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            font-size: 22px;
+            text-align: center;
+            color: #333;
+        }
+
+        .modal-content label {
+             display: block; /* Asegura que la etiqueta esté en su propia línea */
+             margin-bottom: 8px;
+             font-weight: bold;
+             font-size: 16px;
+        }
+
+        .modal-content input[type="number"] {
+            width: calc(100% - 20px); /* Ajusta ancho */
+            padding: 10px;
+            margin-top: 0; /* Elimina margen superior duplicado */
+            margin-bottom: 15px; /* Añade margen inferior */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .modal-content button {
+            display: block; /* Botón de bloque para centrar */
+            width: 100%; /* Ancho completo */
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        .modal-content button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 10px;
+            }
+            nav {
+                 margin-top: 10px;
+                 text-align: center;
+            }
+            nav a {
+                margin: 0 10px;
+                font-size: 16px;
+            }
+            .contenido h1 {
+                font-size: 28px;
+            }
+            .contenido p {
+                font-size: 16px;
+            }
+            section {
+                padding: 40px 15px;
+            }
+             section h2 {
+                 font-size: 26px;
+             }
+             section h3 {
+                 font-size: 20px;
+             }
+             section p, section li {
+                 font-size: 16px;
+             }
+             #aplicacion .transport-option {
+                 flex: 1 1 100%; /* Stack transport options on small screens */
+                 min-width: auto;
+             }
+             #aplicacion .chart-container {
+                 height: 300px; /* Reduce chart height on smaller screens */
+             }
+             .modal-content {
+                 margin: 10% auto;
+                 padding: 20px;
+             }
+             .close {
+                 font-size: 24px;
+                 top: 5px;
+                 right: 10px;
+             }
+        }
+
+
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header>
+        <div class="logo">
+            <img src="316e9f96-1dd6-402f-a2fb-732c3433094f.jpg" alt="Logo MOBIMEX">
+            <div>
+                <strong>MOBIMEX</strong><br>
+                MOVIENDO A MÉXICO
+            </div>
+        </div>
+        <nav>
+            <a href="#quienes-somos">¿Quiénes somos?</a>
+            <a href="#aplicacion">Aplicación</a>
+            <a href="#tarjeta">Tarjeta</a>
+            <a href="#">Soporte</a> </nav>
+    </header>
+
+    <div class="contenido">
+        <h1>Bienvenido a MOBIMEX</h1>
+        <p>En MOBIMEX trabajamos para transformar la movilidad urbana de México con tecnología de punta. Explora nuestra aplicación, conoce nuestra tarjeta inteligente y descubre cómo juntos podemos mover a México hacia el futuro.</p>
+    </div>
+
+    <section id="quienes-somos">
+        <h2>Sobre MobiMex</h2>
+        <p>MobiMex es una empresa tecnológica mexicana fundada en 2025 con el propósito de transformar el transporte público mediante soluciones digitales accesibles, sostenibles e inclusivas. Nacemos con una visión clara: hacer la movilidad urbana más eficiente para todos los ciudadanos de México.</p>
+
+        <h3>Carácter y valores de la compañía</h3>
+        <p>Nos caracteriza una estructura ágil, adaptable y orientada al usuario, con un fuerte compromiso social. Nuestros valores fundamentales son:</p>
+        <ul>
+            <li><strong>Innovación:</strong> Aplicamos tecnología a problemas reales de movilidad.</li>
+            <li><strong>Accesibilidad:</strong> Creamos soluciones fáciles de usar para todos.</li>
+            <li><strong>Transparencia:</strong> Brindamos información clara y útil.</li>
+            <li><strong>Sostenibilidad:</strong> Fomentamos el uso eficiente del transporte público.</li>
+            <li><strong>Impacto social:</strong> Buscamos mejorar el bienestar urbano.</li>
+            <li><strong>Colaboración:</strong> Trabajamos con autoridades, operadores y usuarios.</li>
+            <li><strong>Eficiencia y calidad:</strong> Enfocados en la mejora continua.</li>
+        </ul>
+
+        <h3>Objetivos</h3>
+        <ul>
+            <li>Desarrollar y lanzar una app intuitiva para calcular costos de transporte.</li>
+            <li>Alcanzar 500,000 usuarios activos en el primer año.</li>
+            <li>Establecer alianzas con autoridades para mejorar datos y servicios.</li>
+            <li>Expandirse a todas las ciudades medianas y grandes de México.</li>
+            <li>Apoyar la digitalización del transporte en colaboración con el gobierno.</li>
+            <li>Integrar pagos directos desde la app a mediano plazo.</li>
+        </ul>
+    </section>
+
+    <section id="aplicacion">
+        <h2>Calculadora de Transporte Público</h2>
+         <p class="contenido">Optimiza tus trayectos, ahorra tiempo y dinero.</p> <div class="container">
+            <div class="form-group">
+                <label for="user-type">Tipo de usuario:</label>
+                <select id="user-type">
+                    <option value="general">Usuario General (Sin descuento)</option>
+                    <option value="adulto-mayor">Adulto Mayor (50% descuento)</option>
+                    <option value="estudiante">Estudiante (50% descuento)</option>
+                    <option value="afiliado">Afiliado (30% descuento)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="distance">Distancia a recorrer (km):</label>
+                <input type="number" id="distance" min="1" step="0.1" placeholder="Ingresa la distancia en kilómetros">
+            </div>
+
+            <div class="form-group">
+                <label for="city">Ciudad:</label>
+                <select id="city">
+                    <option value="">Selecciona una ciudad</option>
+                    <option value="cdmx">Ciudad de México (CDMX)</option>
+                    <option value="guadalajara">Guadalajara</option>
+                    <option value="monterrey">Monterrey</option>
+                    <option value="queretaro">Querétaro</option>
+                    <option value="celaya">Celaya</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="transport-options-container">
+                <label>Opciones de transporte disponibles:</label>
+                <div id="transport-options" class="transport-options">
+                    </div>
+            </div>
+
+            <div class="compare-options">
+                <label>Mostrar gráficas comparativas:</label><br>
+                <label><input type="checkbox" id="show-cost-chart"> Costo vs Auto</label>
+                <label><input type="checkbox" id="show-time-chart"> Tiempo vs Auto</label>
+                <label><input type="checkbox" id="show-emissions-chart"> Emisiones CO₂ vs Auto</label>
+            </div>
+
+            <button id="calculate-btn">Calcular Ruta Óptima</button>
+
+            <div id="result-container" class="result-box hidden">
+                <h2 class="result-title">Resultados de tu viaje</h2>
+                <p>Distancia: <span id="result-distance" class="result-value"></span> km</p>
+                <p>Costo total: <span id="result-cost" class="result-value"></span></p>
+                <p>Tiempo estimado: <span id="result-time" class="result-value"></span></p>
+                <p>Emisiones de CO₂: <span id="result-emissions" class="result-value"></span> g</p>
+            </div>
+
+            <div id="chart-cost-container" class="chart-container hidden">
+                <canvas id="cost-chart"></canvas>
+            </div>
+
+            <div id="chart-time-container" class="chart-container hidden">
+                <canvas id="time-chart"></canvas>
+            </div>
+
+            <div id="chart-emissions-container" class="chart-container hidden">
+                <canvas id="emissions-chart"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <section id="tarjeta">
+        <h2>Movicard</h2>
+         <p class="contenido">La forma más fácil y segura de pagar tu transporte público.</p> <div class="tarjeta-container">
+            <h3>Tu Tarjeta Movicard</h3>
+            <img src="Tarjeta.png" alt="Tarjeta Movicard">
+            <br>
+            <button class="btn-recargar" id="open-modal-btn">Recargar tarjeta</button>
+        </div>
+    </section>
+
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="document.getElementById('modal').style.display='none'">&times;</span>
+            <h3>Recargar tarjeta</h3>
+            <label for="monto">Monto a recargar:</label>
+            <input type="number" id="monto" placeholder="$0.00" min="1">
+            <button id="confirm-recharge-btn">Confirmar recarga</button>
+        </div>
+    </div>
+
+    <script>
+        // --- JavaScript para la Calculadora de Transporte ---
+
+        // Datos de transporte por ciudad
+        const transportData = {
+            cdmx: [
+                { name: "Metrobús", price: 6.00, speed: 25, emissions: 50 },
+                { name: "Trolebús", price: 4.00, speed: 20, emissions: 0 },
+                { name: "Tren Ligero", price: 3.00, speed: 30, emissions: 0 },
+                { name: "Metro", price: 5.00, speed: 35, emissions: 0 },
+                { name: "RTP", price: 3.00, speed: 22, emissions: 120 },
+                { name: "ECOBÚS", price: 5.00, speed: 24, emissions: 0 },
+                { name: "ECOBICI", price: 123.00, speed: 15, emissions: 0 }, /* ECOBICI price is often per subscription/day, using a placeholder */
+                { name: "Cablebús", price: 7.00, speed: 18, emissions: 0 },
+                { name: "Microbuses y vagonetas", price: 7.00, speed: 18, emissions: 150 },
+                { name: "Autobuses", price: 8.00, speed: 22, emissions: 180 }
+            ],
+            guadalajara: [
+                { name: "Autobuses", price: 9.50, speed: 22, emissions: 0 },
+                { name: "Trolebús (Sitren)", price: 9.50, speed: 20, emissions: 0 },
+                { name: "Macrobús", price: 9.50, speed: 25, emissions: 50 },
+                { name: "Peribús", price: 9.50, speed: 18, emissions: 150 },
+                { name: "Tren Ligero", price: 9.50, speed: 30, emissions: 0 },
+                { name: "Bicicleta (MiBici)", price: 108.00, speed: 15, emissions: 0 } /* MiBici price is often per subscription/day */
+            ],
+            monterrey: [
+                { name: "Autobus", price: 17.00, speed: 22, emissions: 0 },
+                { name: "Metro", price: 10.00, speed: 35, emissions: 0 }
+            ],
+            queretaro: [
+                { name: "Qrobus", price: 11.00, speed: 24, emissions: 0 }
+            ],
+            celaya: [
+                { name: "Camión", price: 11.00, speed: 20, emissions: 0 }
+            ]
+        };
+
+        // Variables para almacenar selecciones y gráficos
+        let selectedTransports = [];
+        let costChart, timeChart, emissionsChart;
+
+        // Función para actualizar las opciones de transporte al cambiar la ciudad
+        document.getElementById('city').addEventListener('change', function() {
+            const city = this.value;
+            const transportOptionsDiv = document.getElementById('transport-options');
+            transportOptionsDiv.innerHTML = ''; // Limpia las opciones anteriores
+
+            if (city && transportData[city]) {
+                transportData[city].forEach(transport => {
+                    const transportDiv = document.createElement('div');
+                    transportDiv.className = 'transport-option';
+
+                    // Genera un ID único para el checkbox
+                    const checkboxId = `transport-${city}-${transport.name.replace(/\s+/g, '-').toLowerCase()}`;
+
+                    transportDiv.innerHTML = `
+                        <label for="${checkboxId}">
+                            <input type="checkbox" id="${checkboxId}" value="${transport.name}"
+                                data-price="${transport.price}" data-speed="${transport.speed}" data-emissions="${transport.emissions}">
+                            ${transport.name}
+                            <span class="transport-price">$${transport.price.toFixed(2)}</span>
+                        </label>
+                    `;
+
+                    transportOptionsDiv.appendChild(transportDiv);
+                });
+            }
+        });
+
+        // Evento al hacer clic en el botón calcular
+        document.getElementById('calculate-btn').addEventListener('click', function() {
+            const userType = document.getElementById('user-type').value;
+            const distanceInput = document.getElementById('distance');
+            const distance = parseFloat(distanceInput.value);
+            const city = document.getElementById('city').value;
+
+            if (!distance || isNaN(distance) || distance <= 0) {
+                alert('Por favor ingresa una distancia válida (mayor que 0)');
+                 distanceInput.focus(); // Enfoca el campo de distancia
+                return;
+            }
+
+            if (!city) {
+                alert('Por favor selecciona una ciudad');
+                document.getElementById('city').focus(); // Enfoca el campo de ciudad
+                return;
+            }
+
+            // Obtener transportes seleccionados
+            selectedTransports = [];
+            const checkboxes = document.querySelectorAll('#transport-options input[type="checkbox"]:checked');
+
+            if (checkboxes.length === 0) {
+                alert('Por favor selecciona al menos un medio de transporte');
+                return;
+            }
+
+            checkboxes.forEach(checkbox => {
+                selectedTransports.push({
+                    name: checkbox.value,
+                    price: parseFloat(checkbox.dataset.price),
+                    speed: parseFloat(checkbox.dataset.speed),
+                    emissions: parseFloat(checkbox.dataset.emissions)
+                });
+            });
+
+            // Calcular descuento según tipo de usuario
+            let discount = 0;
+            switch(userType) {
+                case 'adulto-mayor':
+                case 'estudiante':
+                    discount = 0.5;
+                    break;
+                case 'afiliado':
+                    discount = 0.3;
+                    break;
+                default:
+                    discount = 0;
+            }
+
+             // Calcular resultados promediados (o sumados para costo/emisiones)
+             // Para costo y emisiones, sumamos los valores de los transportes seleccionados
+             // Para el tiempo, calculamos el tiempo para cada transporte y luego podríamos promediar,
+             // o simplemente mostrar el tiempo para cada uno si la ruta óptima implica múltiples modos.
+             // Aquí sumaremos el costo y las emisiones, y calcularemos un tiempo promedio basado en la velocidad promedio seleccionada.
+
+            let totalCost = 0;
+            let totalEmissions = 0;
+            let totalSpeed = 0;
+
+            selectedTransports.forEach(transport => {
+                totalCost += transport.price * (1 - discount);
+                totalEmissions += transport.emissions; // Sumar emisiones por km
+                totalSpeed += transport.speed; // Sumar velocidades para promediar
+            });
+
+            const averageSpeed = totalSpeed / selectedTransports.length;
+            const totalTime = distance / averageSpeed; // en horas
+
+            // Convertir tiempo a formato legible
+            const hours = Math.floor(totalTime);
+            const minutes = Math.round((totalTime - hours) * 60);
+            let timeString = '';
+            if (hours > 0) timeString += `${hours} hora${hours > 1 ? 's' : ''} `;
+            if (minutes > 0) timeString += `${minutes} minuto${minutes > 1 ? 's' : ''}`;
+            if (timeString === '' && distance > 0) timeString = 'Menos de 1 minuto'; // Para distancias muy cortas
+
+            // Mostrar resultados
+            document.getElementById('result-distance').textContent = distance.toFixed(1);
+            document.getElementById('result-cost').textContent = `$${totalCost.toFixed(2)}`;
+            document.getElementById('result-time').textContent = timeString;
+            document.getElementById('result-emissions').textContent = (totalEmissions * distance).toFixed(0); // Multiplicar emisiones por km por la distancia
+            document.getElementById('result-container').classList.remove('hidden');
+
+            // Calcular comparación con auto (datos estimados)
+            const carConsumptionKmPerLiter = 8; // km por litro
+            const gasPricePerLiter = 22.50; // precio por litro de gasolina (aproximado)
+            const carCostPerKm = gasPricePerLiter / carConsumptionKmPerLiter;
+            const carCost = distance * carCostPerKm;
+
+            const carSpeed = 30; // velocidad promedio estimada en ciudad en km/h
+            const carTime = distance / carSpeed; // en horas
+
+            const carEmissionsPerKm = 150; // emisiones de auto promedio (g/km)
+            const carEmissions = distance * carEmissionsPerKm;
+
+            // Mostrar gráficas si están seleccionadas
+            if (document.getElementById('show-cost-chart').checked) {
+                showCostChart(totalCost, carCost);
+                document.getElementById('chart-cost-container').classList.remove('hidden');
+            } else {
+                document.getElementById('chart-cost-container').classList.add('hidden');
+                if (costChart) { costChart.destroy(); costChart = null; }
+            }
+
+            if (document.getElementById('show-time-chart').checked) {
+                showTimeChart(totalTime, carTime);
+                document.getElementById('chart-time-container').classList.remove('hidden');
+            } else {
+                document.getElementById('chart-time-container').classList.add('hidden');
+                 if (timeChart) { timeChart.destroy(); timeChart = null; }
+            }
+
+            if (document.getElementById('show-emissions-chart').checked) {
+                showEmissionsChart(totalEmissions * distance, carEmissions); // Pasar las emisiones totales calculadas
+                document.getElementById('chart-emissions-container').classList.remove('hidden');
+            } else {
+                document.getElementById('chart-emissions-container').classList.add('hidden');
+                 if (emissionsChart) { emissionsChart.destroy(); emissionsChart = null; }
+            }
+        });
+
+        // Función para mostrar gráfica de costos
+        function showCostChart(publicTransportCost, carCost) {
+            const ctx = document.getElementById('cost-chart').getContext('2d');
+
+            if (costChart) costChart.destroy();
+
+            costChart = new Chart(ctx, {
+                type: 'bar', // Usar gráfica de barras para comparación simple
+                data: {
+                    labels: ['Transporte Público', 'Automóvil (Est.)'],
+                    datasets: [{
+                        label: 'Costo del viaje ($)',
+                        data: [publicTransportCost, carCost],
+                        backgroundColor: [
+                            'rgba(54, 162, 235, 0.7)',
+                            'rgba(255, 99, 132, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 99, 132, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false, // Permitir que el contenedor controle el tamaño
+                    plugins: {
+                         title: {
+                             display: true,
+                             text: 'Comparativa de Costos',
+                             font: { size: 18 }
+                         },
+                         legend: {
+                             display: false // No necesitamos leyenda si solo hay un dataset
+                         }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Costo ($)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Función para mostrar gráfica de tiempo
+        function showTimeChart(publicTransportTime, carTime) {
+            const ctx = document.getElementById('time-chart').getContext('2d');
+
+            if (timeChart) timeChart.destroy();
+
+            timeChart = new Chart(ctx, {
+                type: 'bar', // Usar gráfica de barras
+                data: {
+                    labels: ['Transporte Público', 'Automóvil (Est.)'],
+                    datasets: [{
+                        label: 'Tiempo de viaje (horas)',
+                        data: [publicTransportTime, carTime],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(153, 102, 255, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     plugins: {
+                         title: {
+                             display: true,
+                             text: 'Comparativa de Tiempo Estimado',
+                             font: { size: 18 }
+                         },
+                         legend: {
+                             display: false
+                         }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Tiempo (horas)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Función para mostrar gráfica de emisiones
+        function showEmissionsChart(publicTransportEmissions, carEmissions) {
+            const ctx = document.getElementById('emissions-chart').getContext('2d');
+
+            if (emissionsChart) emissionsChart.destroy();
+
+            emissionsChart = new Chart(ctx, {
+                type: 'bar', // Usar gráfica de barras
+                data: {
+                    labels: ['Transporte Público', 'Automóvil (Est.)'],
+                    datasets: [{
+                        label: 'Emisiones de CO₂ (gramos)',
+                        data: [publicTransportEmissions, carEmissions],
+                        backgroundColor: [
+                            'rgba(255, 206, 86, 0.7)',
+                            'rgba(255, 159, 64, 0.7)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     plugins: {
+                         title: {
+                             display: true,
+                             text: 'Comparativa de Emisiones de CO₂',
+                              font: { size: 18 }
+                         },
+                         legend: {
+                             display: false
+                         }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Emisiones CO₂ (g)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- JavaScript para el Modal de Recarga de Tarjeta ---
+
+        // Obtener el modal y el botón de cierre
+        const modal = document.getElementById('modal');
+        const closeButton = document.querySelector('.modal .close');
+        const recargarBtn = document.getElementById('open-modal-btn');
+        const confirmRecargaBtn = document.getElementById('confirm-recharge-btn');
+        const montoInput = document.getElementById('monto');
+
+
+        // Abrir el modal al hacer clic en el botón "Recargar tarjeta"
+        recargarBtn.onclick = function() {
+            modal.style.display = "block";
+            montoInput.value = ''; // Limpiar el campo al abrir el modal
+             montoInput.focus(); // Enfocar el campo de monto
+        }
+
+        // Cerrar el modal al hacer clic en la "x"
+        closeButton.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // Cerrar el modal al hacer clic fuera de él
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Función para confirmar la recarga
+        confirmRecargaBtn.onclick = function() {
+            const monto = parseFloat(montoInput.value);
+            if (monto && monto > 0) {
+                alert("Recarga exitosa por $" + monto.toFixed(2));
+                modal.style.display = 'none';
+                 montoInput.value = ''; // Limpiar el campo después de la recarga
+            } else {
+                alert("Por favor ingresa un monto válido (mayor que 0).");
+                 montoInput.focus(); // Enfocar el campo si la entrada es inválida
+            }
+        }
+
+         // Permitir recargar con Enter en el campo de monto
+         montoInput.addEventListener('keypress', function(event) {
+             if (event.key === 'Enter') {
+                 event.preventDefault(); // Prevenir el envío del formulario si estuviera en uno
+                 confirmRecargaBtn.click(); // Simular clic en el botón de confirmar
+             }
+         });
+
+    </script>
+
+</body>
+</html>
